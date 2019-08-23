@@ -1,2 +1,2 @@
 # docker-compose-generator
-Converts docker service commands to docker compose .yml structure.
+Converts docker service commands to docker compose file .yml structure.
