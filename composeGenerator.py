@@ -1,9 +1,7 @@
-
 #   
 #  Developed by David Schwarb 8/22/2019
-#  Intended for use converting CLI docker service create comands to the easier to scale docker compose structure
+#  Intended for use converting CLI docker service create commands to the easier to scale docker compose structure
 #  
-
 def dockerComposeGenerator(cmd):
     '''Takes docker service create command and generates an equivelent docker compose file
    Surround your multi word constraints with single quotes.
@@ -50,7 +48,7 @@ def dockerComposeGenerator(cmd):
                 if '=' in cmd[i]:                      #if there is an '=' in the command it will be added to oneWordIndexes
                     oneWordIndexes.append(i)
                     continue
-                elif "'" in cmd[i+1] or '"' in cmd[i+1]:        #if there is a qote in the next command, continue the loop
+                elif "'" in cmd[i+1] or '"' in cmd[i+1]:        #if there is a quote in the next command, continue the loop
                     continue
                 if commands.get(cmd[i]):               #if the command already exists, push it as a list
                     if not isinstance(commands.get(cmd[i]), list):
@@ -72,7 +70,7 @@ def dockerComposeGenerator(cmd):
 
         #processes volume mounts
         volumes = {}
-        if commands.get('mount'):                   #if there are volume mounts, create a subdictionary to hold mount pairs
+        if commands.get('mount'):                   #if there are volume mounts, create a sub-dictionary to hold mount pairs
             mount = commands.get('mount').split(',')
             for mountCommands in mount:
                 k,v = mountCommands.split('=',1)
@@ -90,7 +88,7 @@ def dockerComposeGenerator(cmd):
         return commands
     
     def formatOutput(commands, networks):
-        '''Takes a dicitionary of name:command pairs and returns a formatted version of them'''
+        '''Takes a dictionary of name:command pairs and returns a formatted version of them'''
             #Generate yml format for the command.
         #Basic output template
         output = ('\n    {}:' +
@@ -98,7 +96,7 @@ def dockerComposeGenerator(cmd):
         if commands.get('arg'):
             output += ('\n        command: {}').format(commands.get('arg'))
 
-        #IF replicas or constraint are in the commands, there is a neccassary prereq tier "deploy"
+        #IF replicas or constraint are in the commands, there is a necessary prereq tier "deploy"
         if commands.get('replicas') or commands.get('constraint'):
             output += ('\n        deploy:')
             if commands.get('replicas'):
@@ -163,7 +161,7 @@ def dockerComposeGenerator(cmd):
                 output += ('\n    {}:').format(network)
         return output
     
-    #Lists the commands which are not transferrable from docker service to docker compose
+    #Lists the commands which are not transferable from docker service to docker compose
     notPortableList = ['q', 'quiet', 'no-resolve-image'] 
     
     def badImplementation(commands):
